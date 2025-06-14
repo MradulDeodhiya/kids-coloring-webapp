@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f0f0f0;
+}
+
+header {
+  background-color: #ff4444;
+  padding: 20px;
+  text-align: center;
+}
+
+.logo h1 {
+  color: white;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.intro {
+  background-color: #6b5b6e;
+  color: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.intro h2 {
+  font-size: 2rem;
+}
+
+.category {
+  margin-bottom: 40px;
+}
+
+.category h3 {
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+
+.coloring-card {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.coloring-card:hover {
+  transform: translateY(-5px);
+}
+
+.coloring-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .logo h1 {
+    font-size: 2rem;
+  }
+
+  .intro h2 {
+    font-size: 1.5rem;
+  }
+
+  .category h3 {
+    font-size: 1.5rem;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo h1 {
+    font-size: 1.5rem;
+  }
+
+  .intro h2 {
+    font-size: 1.2rem;
+  }
+
+  .category h3 {
+    font-size: 1.2rem;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+}

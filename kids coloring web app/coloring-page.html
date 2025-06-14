@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coloring Page</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+
+      #canvas-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+      }
+
+      #drawing-canvas {
+        border: 2px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .controls-container {
+        width: 100%;
+        max-width: 450px;
+        background: #6b5b6e;
+        padding: 15px;
+        border-radius: 2px;
+      }
+
+      .controls-layout {
+        display: flex;
+        gap: 10px;
+      }
+
+      .side-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 80px;
+      }
+
+      .tool-btn {
+        width: 100%;
+        padding: 8px 5px;
+        background: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        color: #6b5b6e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: lowercase;
+      }
+
+      .tool-btn.active {
+        background: #e0e0e0;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .main-colors {
+        flex-grow: 1;
+      }
+
+      .toolbar {
+        background: white;
+        padding: 8px;
+        border-radius: 8px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 5px;
+      }
+
+      .action-buttons .tool-btn {
+        flex: 1;
+      }
+
+      .color-btn {
+        width: 100%;
+        aspect-ratio: 1;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .color-btn:hover {
+        transform: scale(1.1);
+      }
+
+      #clear-btn::before {
+        content: "✏️";
+        margin-right: 5px;
+      }
+
+      #home-btn::before {
+        content: "🏠";
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvas-container">
+      <canvas id="drawing-canvas"></canvas>
+    </div>
+
+    <div class="controls-container">
+      <div class="controls-layout">
+        <div class="side-buttons">
+          <button class="tool-btn" id="clear-btn" title="Clear">
+            🗑️ clean
+          </button>
+          <button
+            class="tool-btn"
+            id="home-btn"
+            onclick="window.location.href='index.html'"
+            title="Home"
+          >
+            🏠 home
+          </button>
+        </div>
+
+        <div class="main-colors">
+          <div class="toolbar">
+            <!-- Top row -->
+            <button
+              class="color-btn"
+              style="background: #ffff00"
+              data-color="#ffff00"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #ff8c00"
+              data-color="#ff8c00"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #90ee90"
+              data-color="#90ee90"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #40e0d0"
+              data-color="#40e0d0"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #ff69b4"
+              data-color="#ff69b4"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #deb887"
+              data-color="#deb887"
+            ></button>
+
+            <!-- Middle row -->
+            <button
+              class="color-btn"
+              style="background: #ffffff"
+              data-color="#ffffff"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #000000"
+              data-color="#000000"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #ff0000"
+              data-color="#ff0000"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #008000"
+              data-color="#008000"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #0000ff"
+              data-color="#0000ff"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #8b4513"
+              data-color="#8b4513"
+            ></button>
+
+            <!-- Bottom row -->
+            <button
+              class="color-btn"
+              style="background: #ffa500"
+              data-color="#ffa500"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #800080"
+              data-color="#800080"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #32cd32"
+              data-color="#32cd32"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #20b2aa"
+              data-color="#20b2aa"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #ff1493"
+              data-color="#ff1493"
+            ></button>
+            <button
+              class="color-btn"
+              style="background: #d2691e"
+              data-color="#d2691e"
+            ></button>
+          </div>
+
+          <div class="action-buttons">
+            <button class="tool-btn" id="save-btn" title="Save">💾 save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById("drawing-canvas");
+        const ctx = canvas.getContext("2d");
+        let currentColor = "#000000";
+        let originalImageData = null;
+        let undoStack = [];
+        let redoStack = [];
+
+        // Initialize color buttons
+        document.querySelectorAll(".color-btn").forEach((button) => {
+          button.addEventListener("click", () => {
+            document.querySelectorAll(".color-btn").forEach((btn) => {
+              btn.style.border = "none";
+            });
+            button.style.border = "2px solid #000";
+            currentColor = button.dataset.color;
+          });
+        });
+
+        // Set initial active color
+        document.querySelector(
+          '.color-btn[data-color="#000000"]'
+        ).style.border = "2px solid #000";
+
+        function saveState() {
+          undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+          redoStack = [];
+        }
+
+        // Improved border detection function with anti-aliasing handling
+        function isBorder(x, y) {
+          const i = (y * originalImageData.width + x) * 4;
+          const r = originalImageData.data[i];
+          const g = originalImageData.data[i + 1];
+          const b = originalImageData.data[i + 2];
+          const a = originalImageData.data[i + 3];
+
+          // Consider both fully black pixels and dark anti-aliased pixels as borders
+          const isVeryDark = r < 30 && g < 30 && b < 30;
+          const isDarkGray = r < 128 && g < 128 && b < 128;
+
+          return isVeryDark || (isDarkGray && a > 200);
+        }
+
+        // Improved flood fill implementation with better edge handling
+        function floodFill(startX, startY, fillColor) {
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const pixels = imageData.data;
+          const width = imageData.width;
+          const height = imageData.height;
+
+          // Don't fill if outside image boundaries
+          if (startX < 0 || startX >= width || startY < 0 || startY >= height) {
+            return;
+          }
+
+          // Convert fill color from hex to RGB
+          const fillR = parseInt(fillColor.substr(1, 2), 16);
+          const fillG = parseInt(fillColor.substr(3, 2), 16);
+          const fillB = parseInt(fillColor.substr(5, 2), 16);
+
+          const startPos = (startY * width + startX) * 4;
+          const startR = pixels[startPos];
+          const startG = pixels[startPos + 1];
+          const startB = pixels[startPos + 2];
+
+          // Don't fill if clicking on a border or very close to it
+          if (isBorder(startX, startY)) {
+            return;
+          }
+
+          // Enhanced color similarity check with dynamic tolerance
+          function isSimilarColor(pos) {
+            const r = pixels[pos];
+            const g = pixels[pos + 1];
+            const b = pixels[pos + 2];
+
+            // Dynamic tolerance based on color brightness
+            const brightness = (r + g + b) / 3;
+            const tolerance = brightness < 50 ? 100 : 30;
+
+            const colorDiff = Math.sqrt(
+              Math.pow(r - startR, 2) +
+                Math.pow(g - startG, 2) +
+                Math.pow(b - startB, 2)
+            );
+
+            return colorDiff <= tolerance;
+          }
+
+          // Special handling for black color
+          const isBlackFill = fillR === 0 && fillG === 0 && fillB === 0;
+          const isStartBlack = startR < 30 && startG < 30 && startB < 30;
+
+          if (!isBlackFill && !isStartBlack) {
+            // Only check for similar colors if we're not dealing with black
+            const colorDiff = Math.sqrt(
+              Math.pow(startR - fillR, 2) +
+                Math.pow(startG - fillG, 2) +
+                Math.pow(startB - fillB, 2)
+            );
+
+            if (colorDiff < 5) {
+              return;
+            }
+          }
+
+          const stack = [[startX, startY]];
+          const visited = new Set();
+
+          while (stack.length > 0) {
+            const [x, y] = stack.pop();
+            const key = `${x},${y}`;
+
+            if (
+              x < 0 ||
+              x >= width ||
+              y < 0 ||
+              y >= height ||
+              visited.has(key)
+            ) {
+              continue;
+            }
+
+            visited.add(key);
+            const pos = (y * width + x) * 4;
+
+            // Enhanced border detection and color similarity check
+            if (isBorder(x, y) || !isSimilarColor(pos)) {
+              continue;
+            }
+
+            // Fill the pixel with anti-aliasing consideration
+            pixels[pos] = fillR;
+            pixels[pos + 1] = fillG;
+            pixels[pos + 2] = fillB;
+            pixels[pos + 3] = 255;
+
+            // Add neighboring pixels including diagonals for smoother fill
+            stack.push(
+              [x + 1, y],
+              [x - 1, y],
+              [x, y + 1],
+              [x, y - 1],
+              [x + 1, y + 1],
+              [x - 1, y - 1],
+              [x + 1, y - 1],
+              [x - 1, y + 1]
+            );
+          }
+
+          ctx.putImageData(imageData, 0, 0);
+        }
+
+        canvas.addEventListener("mousedown", (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const x = Math.floor(
+            (e.clientX - rect.left) * (canvas.width / rect.width)
+          );
+          const y = Math.floor(
+            (e.clientY - rect.top) * (canvas.height / rect.height)
+          );
+
+          saveState();
+          floodFill(x, y, currentColor);
+        });
+
+        // Save functionality
+        document.getElementById("save-btn").addEventListener("click", () => {
+          const link = document.createElement("a");
+          link.download = "my-coloring.png";
+          link.href = canvas.toDataURL();
+          link.click();
+        });
+
+        // Clear button
+        document.getElementById("clear-btn").addEventListener("click", () => {
+          saveState();
+          if (originalImageData) {
+            ctx.putImageData(originalImageData, 0, 0);
+          } else {
+            loadImage();
+          }
+        });
+
+        // Improved image loading
+        function loadImage(maxWidth = 800, maxHeight = 600) {
+          const img = new Image();
+          const imageId = new URLSearchParams(window.location.search).get("id");
+
+          const imageMap = {
+            frame124: "Frame 124.png",
+            frame125: "Frame 125.png",
+            frame126: "Frame 126.png",
+            frame127: "Frame 127.png",
+          };
+
+          const filename = imageMap[imageId];
+          if (!filename) {
+            console.error("Invalid image ID:", imageId);
+            alert(
+              "Invalid image selection. Please return to home page and try again."
+            );
+            return;
+          }
+
+          img.src = `images/${filename}`;
+          //img.crossOrigin = "Anonymous";
+
+          img.onload = function () {
+            const aspectRatio = img.width / img.height;
+            let newWidth = img.width;
+            let newHeight = img.height;
+
+            if (newWidth > maxWidth || newHeight > maxHeight) {
+              if (maxWidth / maxHeight > aspectRatio) {
+                newHeight = maxHeight;
+                newWidth = maxHeight * aspectRatio;
+              } else {
+                newWidth = maxWidth;
+                newHeight = maxWidth / aspectRatio;
+              }
+            }
+
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            ctx.clearRect(0, 0, newWidth, newHeight);
+
+            // Draw white background
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, newWidth, newHeight);
+
+            // Draw the image
+            ctx.drawImage(img, 0, 0, newWidth, newHeight);
+            originalImageData = ctx.getImageData(0, 0, newWidth, newHeight);
+          };
+
+          img.onerror = function () {
+            console.error("Error loading image:", imageId);
+            alert("Error loading image. Please try again.");
+          };
+        }
+
+        // Initialize
+        window.addEventListener("resize", () => {
+          const maxWidth = Math.min(800, window.innerWidth - 40);
+          const maxHeight = Math.min(600, window.innerHeight - 200);
+          loadImage(maxWidth, maxHeight);
+        });
+
+        // Initial load
+        const maxWidth = Math.min(800, window.innerWidth - 40);
+        const maxHeight = Math.min(600, window.innerHeight - 200);
+        loadImage(maxWidth, maxHeight);
+      });
+    </script>
+  </body>
+</html>
